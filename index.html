@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Tareas</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Lista de Tareas</h1>
+
+    <form id="task-form" class="task-form">
+      <input
+        type="text"
+        id="task-input"
+        class="task-input"
+        placeholder="Agregar una tarea..."
+        required
+        autocomplete="off"
+      >
+      <button type="submit" class="btn btn-add">Agregar</button>
+    </form>
+
+    <p id="empty-msg" class="empty-msg">No hay tareas. ¡Agrega una!</p>
+
+    <ul id="task-list" class="task-list"></ul>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
