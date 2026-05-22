@@ -9,8 +9,9 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-  background: #f4f5f7;
-  color: #1a1a2e;
+  background: #0b0b1a;
+  background-image: radial-gradient(ellipse at 50% 0%, #1a0a2e 0%, #0b0b1a 60%);
+  color: #e0e0ff;
   line-height: 1.5;
   padding: 1rem;
   min-height: 100vh;
@@ -26,9 +27,12 @@ body {
 
 h1 {
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 1rem;
   text-align: center;
+  color: #00f0ff;
+  text-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
+  letter-spacing: 0.05em;
 }
 
 /* ─── Form ─── */
@@ -42,15 +46,22 @@ h1 {
 .task-input {
   flex: 1;
   padding: 0.625rem 0.75rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid #3a2a5e;
   border-radius: 6px;
   font-size: 0.95rem;
   outline: none;
-  transition: border-color 0.2s;
+  background: #12122a;
+  color: #e0e0ff;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .task-input:focus {
-  border-color: #6366f1;
+  border-color: #ff44ff;
+  box-shadow: 0 0 8px rgba(255, 68, 255, 0.3);
+}
+
+.task-input::placeholder {
+  color: #5a4a7a;
 }
 
 .btn {
@@ -64,31 +75,34 @@ h1 {
 }
 
 .btn-add {
-  background: #6366f1;
+  background: linear-gradient(135deg, #ff44ff, #ff00aa);
   color: #fff;
 }
 
 .btn-add:hover {
-  background: #4f46e5;
+  background: linear-gradient(135deg, #ff66ff, #ff22bb);
+  box-shadow: 0 0 12px rgba(255, 68, 255, 0.4);
 }
 
 .btn-delete {
   background: transparent;
-  color: #9ca3af;
+  color: #5a4a7a;
   padding: 0.25rem 0.5rem;
   font-size: 1.1rem;
   line-height: 1;
+  transition: color 0.2s, text-shadow 0.2s;
 }
 
 .btn-delete:hover {
-  color: #ef4444;
+  color: #ff44ff;
+  text-shadow: 0 0 8px rgba(255, 68, 255, 0.5);
 }
 
 /* ─── Empty state ─── */
 
 .empty-msg {
   text-align: center;
-  color: #9ca3af;
+  color: #5a4a7a;
   font-size: 0.95rem;
   padding: 2rem 0;
 }
@@ -107,14 +121,15 @@ h1 {
   align-items: center;
   gap: 0.625rem;
   padding: 0.75rem;
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: #12122a;
+  border: 1px solid #2a1a4a;
   border-radius: 8px;
-  transition: box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .task-item:hover {
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  border-color: #ff44ff;
+  box-shadow: 0 0 12px rgba(255, 68, 255, 0.15), inset 0 0 20px rgba(255, 68, 255, 0.03);
 }
 
 /* ─── Checkbox ─── */
@@ -122,7 +137,7 @@ h1 {
 .task-checkbox {
   width: 1.125rem;
   height: 1.125rem;
-  accent-color: #6366f1;
+  accent-color: #ff44ff;
   cursor: pointer;
   flex-shrink: 0;
 }
@@ -137,5 +152,5 @@ h1 {
 
 .task-text.done {
   text-decoration: line-through;
-  color: #9ca3af;
+  color: #4a3a6a;
 }
