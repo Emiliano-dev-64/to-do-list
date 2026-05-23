@@ -7,6 +7,27 @@ const prioritySelect = document.getElementById('task-priority');
 const dateInput = document.getElementById('task-date');
 const filterBar = document.getElementById('filter-bar');
 
+const sounds = {
+  confirm: new Audio('sfx/ui confirm.wav'),
+  back: new Audio('sfx/ui back.wav'),
+  apply: new Audio('sfx/ui apply.wav'),
+  focus: new Audio('sfx/ui focus.wav'),
+  hover: new Audio('sfx/ui hover.wav'),
+};
+
+let hoverTimer = null;
+function playSound(name) {
+  if (name === 'hover') {
+    if (hoverTimer) return;
+    hoverTimer = setTimeout(() => { hoverTimer = null; }, 80);
+  }
+  const audio = sounds[name];
+  if (audio) {
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+  }
+}
+
 const STORAGE_KEY = 'tareas';
 
 function loadTasks() {
@@ -90,7 +111,10 @@ function render() {
     checkbox.type = 'checkbox';
     checkbox.className = 'task-checkbox';
     checkbox.checked = task.done;
-    checkbox.addEventListener('change', () => toggleTask(task.id));
+    checkbox.addEventListener('change', () => {
+      playSound('apply');
+      toggleTask(task.id);
+    });
 
     const body = document.createElement('div');
     body.className = 'task-body';
@@ -149,6 +173,7 @@ form.addEventListener('submit', (e) => {
   e.preventDefault();
   const text = input.value.trim();
   if (!text) return;
+  playSound('focus');
   addTask(text);
   input.value = '';
   categorySelect.value = '';
@@ -163,6 +188,23 @@ filterBar.addEventListener('click', (e) => {
 
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  playSound('focus');
   currentFilter = btn.dataset.filter;
   render();
+});
+
+[categorySelect, prioritySelect].forEach(sel => {
+  sel.addEventListener('focus', () => playSound('confirm'));
+  sel.addEventListener('blur', () => playSound('back'));
+});
+
+let lastHovered = null;
+document.addEventListener('mouseover', (e) => {
+  const target = e.target.closest(
+    '.btn, .filter-btn, .task-item, .task-select, .task-date, .task-checkbox, .task-text'
+  );
+  if (target && target !== lastHovered) {
+    lastHovered = target;
+    playSound('hover');
+  }
 });

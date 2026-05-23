@@ -69,3 +69,12 @@ Overdue
 Los textos en ingles pasalos al español a excepción de "Gaming".
 
 ANTES de hacer nada, primero explicame como añadirías estos features, armame un plan y lo vamos ejecutando paso a paso
+
+
+Features un poco más avanzados
+
+Estadísticas, algo tipo:
+
+12 tasks completed
+3 tasks pending
+

@@ -67,7 +67,7 @@ h1 {
 }
 
 .task-input::placeholder {
-  color: #5a4a7a;
+  color: #8364c0;
 }
 
 .task-select,
@@ -117,7 +117,7 @@ h1 {
 
 .btn-add {
   background: linear-gradient(135deg, #ff44ff, #ff00aa);
-  color: #fff;
+  color: #2b0a3d;
 }
 
 .btn-add:hover {
@@ -167,7 +167,7 @@ h1 {
 
 .filter-btn.active {
   background: linear-gradient(135deg, #ff44ff, #ff00aa);
-  color: #fff;
+  color: #2b0a3d;
   border-color: transparent;
   box-shadow: 0 0 12px rgba(255, 68, 255, 0.35);
 }
@@ -226,7 +226,7 @@ h1 {
 .task-checkbox {
   width: 1.125rem;
   height: 1.125rem;
-  accent-color: #ff44ff;
+  accent-color: #44ff6d;
   cursor: pointer;
   flex-shrink: 0;
 }
