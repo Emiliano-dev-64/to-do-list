@@ -2,6 +2,10 @@ const form = document.getElementById('task-form');
 const input = document.getElementById('task-input');
 const list = document.getElementById('task-list');
 const emptyMsg = document.getElementById('empty-msg');
+const categorySelect = document.getElementById('task-category');
+const prioritySelect = document.getElementById('task-priority');
+const dateInput = document.getElementById('task-date');
+const filterBar = document.getElementById('filter-bar');
 
 const STORAGE_KEY = 'tareas';
 
@@ -26,13 +30,32 @@ function saveTasks() {
 
 let tasks = loadTasks();
 let nextId = tasks.length ? Math.max(...tasks.map(t => t.id)) + 1 : 1;
+let currentFilter = 'all';
 
 render();
 
 function addTask(text) {
-  tasks.push({ id: nextId++, text, done: false });
+  const category = categorySelect.value;
+  const priority = prioritySelect.value;
+  const dueDate = dateInput.value || null;
+  tasks.push({ id: nextId++, text, done: false, category, priority, dueDate });
   saveTasks();
   render();
+}
+
+function getDueLabel(dueDate) {
+  if (!dueDate) return null;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const due = new Date(dueDate + 'T00:00:00');
+  const diffDays = Math.round((due - today) / 86400000);
+
+  if (diffDays < 0) return { text: 'Atrasada', className: 'overdue' };
+  if (diffDays === 0) return { text: 'Vence hoy', className: 'tomorrow' };
+  if (diffDays === 1) return { text: 'Vence mañana', className: 'tomorrow' };
+
+  const formatted = due.toLocaleDateString('es', { day: 'numeric', month: 'short' });
+  return { text: formatted, className: 'future' };
 }
 
 function toggleTask(id) {
@@ -49,11 +72,17 @@ function deleteTask(id) {
 }
 
 function render() {
-  emptyMsg.hidden = tasks.length > 0;
+  const filtered = tasks.filter(task => {
+    if (currentFilter === 'completed') return task.done;
+    if (currentFilter === 'pending') return !task.done;
+    return true;
+  });
+
+  emptyMsg.hidden = filtered.length > 0;
 
   list.innerHTML = '';
 
-  for (const task of tasks) {
+  for (const task of filtered) {
     const li = document.createElement('li');
     li.className = 'task-item';
 
@@ -63,10 +92,47 @@ function render() {
     checkbox.checked = task.done;
     checkbox.addEventListener('change', () => toggleTask(task.id));
 
+    const body = document.createElement('div');
+    body.className = 'task-body';
+
     const span = document.createElement('span');
     span.className = `task-text${task.done ? ' done' : ''}`;
     span.textContent = task.text;
     span.addEventListener('click', () => toggleTask(task.id));
+    body.appendChild(span);
+
+    const hasMeta = task.category || task.priority || task.dueDate;
+    if (hasMeta) {
+      const meta = document.createElement('div');
+      meta.className = 'task-meta';
+
+      const catLabels = { study: 'Estudio', work: 'Trabajo', personal: 'Personal', gaming: 'Gaming' };
+      if (task.category) {
+        const cat = document.createElement('span');
+        cat.className = `task-category ${task.category}`;
+        cat.textContent = catLabels[task.category] || task.category;
+        meta.appendChild(cat);
+      }
+
+      if (task.priority) {
+        const pri = document.createElement('span');
+        pri.className = `task-priority ${task.priority}`;
+        pri.textContent = task.priority.charAt(0).toUpperCase() + task.priority.slice(1);
+        meta.appendChild(pri);
+      }
+
+      if (task.dueDate) {
+        const dueLabel = getDueLabel(task.dueDate);
+        if (dueLabel) {
+          const due = document.createElement('span');
+          due.className = `task-due ${dueLabel.className}`;
+          due.textContent = dueLabel.text;
+          meta.appendChild(due);
+        }
+      }
+
+      body.appendChild(meta);
+    }
 
     const delBtn = document.createElement('button');
     delBtn.className = 'btn btn-delete';
@@ -74,7 +140,7 @@ function render() {
     delBtn.setAttribute('aria-label', `Eliminar ${task.text}`);
     delBtn.addEventListener('click', () => deleteTask(task.id));
 
-    li.append(checkbox, span, delBtn);
+    li.append(checkbox, body, delBtn);
     list.appendChild(li);
   }
 }
@@ -85,5 +151,18 @@ form.addEventListener('submit', (e) => {
   if (!text) return;
   addTask(text);
   input.value = '';
+  categorySelect.value = '';
+  prioritySelect.value = '';
+  dateInput.value = '';
   input.focus();
+});
+
+filterBar.addEventListener('click', (e) => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = btn.dataset.filter;
+  render();
 });

@@ -36,3 +36,36 @@ Ahora agregale persistencia con localStorage:
 Que la lectura inicial sea defensiva (si no hay nada, arranca con array vacío sin tirar error).
 
 Mostrame el diff. Después refresco el navegador y pruebo que sobreviva al reload.
+
+Ideas de features:
+
+✅ Filtro de tareas, botones tipo:
+- All 
+- Completed
+- Pending
+
+🎨 Categorías / Tags:
+- Study
+- Work
+- Personal
+- Gaming
+Cada tag con color distinto.
+
+⭐ Prioridades:
+- Baja (color verde)
+- Media (color amarillo)
+- Alta (color rojo)
+
+📅 Fecha límite
+
+Mostrar:
+
+Due tomorrow
+
+o:
+
+Overdue
+
+Los textos en ingles pasalos al español a excepción de "Gaming".
+
+ANTES de hacer nada, primero explicame como añadirías estos features, armame un plan y lo vamos ejecutando paso a paso
